@@ -78,8 +78,9 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 - [x] Fix all `unsafe-undefined` findings (3)
 - [x] Fix casts via `src/opaque.zig`; 0 cast findings
 - [x] Clear function-length, parameter, complexity findings
-- [ ] Remaining: 13 `allocator-first-param`, 4 production-file-size, 2 max-file-imports
-- [ ] `make lint` passes
+- [x] Remaining errors: 0
+- [x] `make lint` passes with 6 advisory warnings (4 production-size, 2 max-file-imports)
+- [ ] Resolve advisory production-size/fan-out warnings
 
 ### M4 — `zdepends` report binary
 
