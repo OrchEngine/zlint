@@ -1,6 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
+type: Feature
 title: ''
 labels: C-enhancement
 assignees: ''
