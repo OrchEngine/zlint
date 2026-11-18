@@ -14,6 +14,7 @@ const LinterContext = zlint.linter.lint_context;
 const ForbidCasts = @This();
 
 allow_tests: bool = true,
+allow_paths: []const []const u8 = &[_][]const u8{},
 
 pub const meta: Rule.Meta = .{
     .name = "forbid-casts",
@@ -39,6 +40,11 @@ fn banned(name: []const u8) bool {
 pub fn runOnNode(self: *const ForbidCasts, wrapper: NodeWrapper, ctx: *LinterContext) void {
     if (!isBuiltinCall(wrapper.node.tag)) return;
     if (self.allow_tests and zlint.linter.ast_utils.isInTest(ctx, wrapper.idx)) return;
+
+    const pathname = ctx.source.pathname orelse "";
+    for (self.allow_paths) |allowed| {
+        if (std.mem.endsWith(u8, pathname, allowed)) return;
+    }
 
     const ast = ctx.ast();
     const name = ast.tokenSlice(wrapper.node.main_token);
