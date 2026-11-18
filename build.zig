@@ -17,6 +17,9 @@ pub fn build(b: *std.Build) void {
         b.path("custom_rules/max_function_lines.zig"),
         b.path("custom_rules/max_complexity.zig"),
         b.path("custom_rules/max_params.zig"),
+        b.path("custom_rules/max_nesting.zig"),
+        b.path("custom_rules/production_file_size.zig"),
+        b.path("custom_rules/max_file_imports.zig"),
         b.path("custom_rules/forbid_casts.zig"),
     };
     const custom_rule_paths = b.option(
