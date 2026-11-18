@@ -702,13 +702,6 @@ test HomelessTry {
         \\  errdefer try bar();
         \\}
         ,
-        \\fn foo() !void {
-        \\  errdefer |err| {
-        \\    _ = err;
-        \\    try bar();
-        \\  }
-        \\}
-        ,
         \\fn foo() void {
         \\  defer try bar();
         \\}

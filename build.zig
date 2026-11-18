@@ -13,11 +13,17 @@ pub fn build(b: *std.Build) void {
     const coverage = b.option(bool, "coverage", "Build test binaries with the LLVM backend for kcov coverage") orelse false;
     const use_llvm: ?bool = if (coverage) true else null;
     // these are relative to the caller, so if we are a dependency, it will be relative to the depender
+    const default_custom_rules = [_]Build.LazyPath{
+        b.path("custom_rules/max_function_lines.zig"),
+        b.path("custom_rules/max_complexity.zig"),
+        b.path("custom_rules/max_params.zig"),
+        b.path("custom_rules/forbid_casts.zig"),
+    };
     const custom_rule_paths = b.option(
         []const Build.LazyPath,
         "custom_rules",
         "comma separated list of custom rule files. See https://donisaac.github.io/zlint/docs/configuration/custom-rules",
-    ) orelse &.{};
+    ) orelse &default_custom_rules;
 
     var l = Linker.init(b);
     defer l.deinit();

@@ -70,11 +70,17 @@ test "global directives with all rules" {
     defer f.deinit();
     const s = &f.s;
 
-    try t.expectEqual(Suppressions.RuleMask.initFull(), s.global);
+    try t.expectEqual(Suppressions.RuleMask.full, s.global);
 }
 
 test "repeated rule names do not overflow" {
-    const source = "// zlint-disable" ++ (" unsafe-undefined" ** 512) ++ "\nconst x = 1;";
+    const source_text = comptime blk: {
+        var out: []const u8 = "// zlint-disable";
+        for (0..512) |_| out = out ++ " unsafe-undefined";
+        break :blk out ++ "\nconst x = 1;";
+    };
+    const source = try t.allocator.dupeSentinel(u8, source_text, 0);
+    defer t.allocator.free(source);
     var f: Fixture = try .init(source);
     defer f.deinit();
     const s = &f.s;
@@ -221,7 +227,13 @@ test "line directives do not disable rules globally" {
 test "many lines" {
     // every other line is disabled
     const n = 64;
-    const source = "// zlint-disable-next-line\nconst x = 1;\n" ** n;
+    const source_text = comptime blk: {
+        var out: []const u8 = "";
+        for (0..n) |_| out = out ++ "// zlint-disable-next-line\nconst x = 1;\n";
+        break :blk out;
+    };
+    const source = try t.allocator.dupeSentinel(u8, source_text, 0);
+    defer t.allocator.free(source);
     var f: Fixture = try .init(source);
     defer f.deinit();
     const s = &f.s;
@@ -385,7 +397,7 @@ test "randomized sources match a per-line reference" {
         masks.clearRetainingCapacity();
         const newline: []const u8 = if (rand.boolean()) "\n" else "\r\n";
         const n_lines = rand.intRangeAtMost(usize, 1, 40);
-        try masks.appendNTimes(t.allocator, .initEmpty(), n_lines + 1);
+        try masks.appendNTimes(t.allocator, .empty, n_lines + 1);
 
         for (0..n_lines) |i| {
             if (i > 0) try buf.appendSlice(t.allocator, newline);
@@ -408,7 +420,7 @@ test "randomized sources match a per-line reference" {
         const trailing_newline = rand.boolean();
         if (trailing_newline) try buf.appendSlice(t.allocator, newline);
 
-        const source = try t.allocator.dupeZ(u8, buf.items);
+        const source = try t.allocator.dupeSentinel(u8, buf.items, 0);
         defer t.allocator.free(source);
         var f: Fixture = try .init(source);
         defer f.deinit();
@@ -431,9 +443,9 @@ test "randomized sources match a per-line reference" {
 }
 
 fn listMask(list: []const u8) Suppressions.RuleMask {
-    var mask: Suppressions.RuleMask = .initEmpty();
+    var mask: Suppressions.RuleMask = .empty;
     const names = std.mem.trim(u8, list, " ");
-    if (names.len == 0 or std.mem.startsWith(u8, names, "--")) return .initFull();
+    if (names.len == 0 or std.mem.startsWith(u8, names, "--")) return .full;
     if (std.mem.indexOf(u8, names, "unsafe-undefined") != null) mask.set(unsafe_undefined.int());
     if (std.mem.indexOf(u8, names, "unused-decls") != null) mask.set(unused_decls.int());
     return mask;

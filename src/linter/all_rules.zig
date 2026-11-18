@@ -29,11 +29,12 @@ pub const all: []const type = blk: {
 /// `RulesConfig.Rules`, which are snake_case.
 pub fn snakeName(comptime RuleImpl: type) [:0]const u8 {
     comptime {
-        var name: [RuleImpl.meta.name.len]u8 = undefined;
-        @memcpy(&name, RuleImpl.meta.name);
+        var name: [RuleImpl.meta.name.len:0]u8 = undefined;
+        @memcpy(name[0..RuleImpl.meta.name.len], RuleImpl.meta.name);
+        name[RuleImpl.meta.name.len] = 0;
         std.mem.replaceScalar(u8, &name, '-', '_');
         const frozen = name;
-        return std.fmt.comptimePrint("{s}", .{&frozen});
+        return &frozen;
     }
 }
 

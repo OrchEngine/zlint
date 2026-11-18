@@ -23,5 +23,4 @@ tmp/**
 temp/
 *.tmp
 
-vendor
 openspec
