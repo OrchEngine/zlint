@@ -137,7 +137,7 @@ test {
 }
 
 test eatWhitespace {
-    const TestCase = struct { []const u8, []const u8 };
+    const TestCase = @Tuple(&[_]type{ []const u8, []const u8 });
     const cases: []const TestCase = &[_]TestCase{
         .{ "", "" },
         .{ " ", "" },
