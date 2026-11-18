@@ -56,6 +56,7 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 - [x] `max-complexity`
 - [x] `max-params`
 - [x] `forbid-casts`
+- [x] audited `src/opaque.zig` helper and project cast migration
 - [ ] `max-nesting`
 - [ ] `import-cycles`
 - [ ] `recursion`
@@ -69,10 +70,11 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 - [x] Ignore submodule and generated files
 - [x] Enable custom rules as errors
 - [x] Replace `lint_rules.sh`
-- [ ] Fix all `sort-imports` findings (9)
-- [ ] Fix all `suppressed-errors` findings (6)
-- [ ] Fix all `unsafe-undefined` findings (3)
-- [ ] Fix all custom rule findings (34 casts, 12 LOC, 8 params, 7 complexity)
+- [x] Fix all `sort-imports` findings (9)
+- [x] Fix all `suppressed-errors` findings (6)
+- [x] Fix all `unsafe-undefined` findings (3)
+- [x] Fix casts via `src/opaque.zig`; 0 cast findings
+- [ ] Remaining custom findings: 11 function-length, 8 params, 6 complexity
 - [ ] `make lint` passes
 - [x] Replace `lint_rules.sh`
 
