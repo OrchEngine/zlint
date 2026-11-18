@@ -20,6 +20,8 @@ pub fn build(b: *std.Build) void {
         b.path("custom_rules/max_nesting.zig"),
         b.path("custom_rules/production_file_size.zig"),
         b.path("custom_rules/max_file_imports.zig"),
+        b.path("custom_rules/uncalled_private_function.zig"),
+        b.path("custom_rules/mutual_type_cycles.zig"),
         b.path("custom_rules/forbid_casts.zig"),
     };
     const custom_rule_paths = b.option(

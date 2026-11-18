@@ -59,10 +59,12 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 - [x] `max-nesting`
 - [x] `production-file-size`
 - [x] `max-file-imports`
+- [x] `uncalled-private-function`
+- [x] `mutual-type-cycles`
 - [x] audited `src/opaque.zig` helper and project cast migration
-- [ ] `import-cycles`
-- [ ] `recursion`
-- [ ] `unused-private-function`
+- [ ] `import-cycles` (needs cross-file graph; keep in zdepends for now)
+- [ ] `recursion` (needs cross-file call graph; keep in zdepends for now)
+- [ ] full naming-convention rule (types, fields, files)
 - [ ] rule tests for every custom rule
 - [ ] docs generation for custom rules
 
