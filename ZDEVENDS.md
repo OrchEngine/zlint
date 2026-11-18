@@ -56,8 +56,10 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 - [x] `max-complexity`
 - [x] `max-params`
 - [x] `forbid-casts`
+- [x] `max-nesting`
+- [x] `production-file-size`
+- [x] `max-file-imports`
 - [x] audited `src/opaque.zig` helper and project cast migration
-- [ ] `max-nesting`
 - [ ] `import-cycles`
 - [ ] `recursion`
 - [ ] `unused-private-function`
@@ -68,15 +70,16 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 
 - [x] `zlint.json` in `orchengine-zig`
 - [x] Ignore submodule and generated files
-- [x] Enable custom rules as errors
+- [x] Enable all zlint rules except `line-length`, `homeless-try`, `no-unresolved`
+- [x] Custom rules enabled; production-file-size and max-file-imports are warnings
 - [x] Replace `lint_rules.sh`
 - [x] Fix all `sort-imports` findings (9)
 - [x] Fix all `suppressed-errors` findings (6)
 - [x] Fix all `unsafe-undefined` findings (3)
 - [x] Fix casts via `src/opaque.zig`; 0 cast findings
-- [ ] Remaining custom findings: 11 function-length, 8 params, 6 complexity
+- [x] Clear function-length, parameter, complexity findings
+- [ ] Remaining: 13 `allocator-first-param`, 4 production-file-size, 2 max-file-imports
 - [ ] `make lint` passes
-- [x] Replace `lint_rules.sh`
 
 ### M4 — `zdepends` report binary
 
