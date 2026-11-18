@@ -1,6 +1,7 @@
 ---
 name: Rule Suggestion
 about: Suggest a new lint rule
+type: Feature
 title: 'rule: `some-rule-name`'
 labels: A-linter, C-rule
 assignees: ''
