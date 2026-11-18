@@ -68,12 +68,13 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 - [x] `zlint.json` in `orchengine-zig`
 - [x] Ignore submodule and generated files
 - [x] Enable custom rules as errors
-- [ ] Fix all `sort-imports` findings
-- [ ] Fix all `suppressed-errors` findings
-- [ ] Fix all `unsafe-undefined` findings
-- [ ] Fix all custom rule findings
+- [x] Replace `lint_rules.sh`
+- [ ] Fix all `sort-imports` findings (9)
+- [ ] Fix all `suppressed-errors` findings (6)
+- [ ] Fix all `unsafe-undefined` findings (3)
+- [ ] Fix all custom rule findings (34 casts, 12 LOC, 8 params, 7 complexity)
 - [ ] `make lint` passes
-- [ ] Replace `lint_rules.sh`
+- [x] Replace `lint_rules.sh`
 
 ### M4 — `zdepends` report binary
 
@@ -110,7 +111,7 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 - [ ] Pin submodule commit
 - [ ] Build zlint from submodule in CI
 - [ ] Run `zlint --deny-warnings`
-- [ ] Remove `make lint-rules` from CI/Makefile
+- [x] Remove `make lint-rules` from CI/Makefile
 - [ ] Update AGENTS and code-style guide
 - [ ] Keep `testaudit.sh` and `workflow_e2e.sh`
 - [ ] `make verify` passes
