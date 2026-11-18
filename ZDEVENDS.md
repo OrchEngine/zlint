@@ -5,7 +5,7 @@ rules and the `zdepends` report binary. Upstream: `DonIsaac/zlint`, MIT.
 
 ## Status
 
-- Fork: `mororo250/zlint`
+- Fork: `OrchEngine/zlint`
 - Integration branch: `zdepends`
 - Zig toolchain: **0.17.1**
 - Base: upstream `main` at `421c419`
