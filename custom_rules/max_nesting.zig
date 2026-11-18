@@ -3,7 +3,6 @@
 //! Flags control-flow nesting deeper than `max_depth` inside a function.
 //! Off by default; enabled by `zlint.json`.
 
-const std = @import("std");
 const zlint = @import("zlint");
 
 const Rule = zlint.linter.rule.Rule;
@@ -22,23 +21,11 @@ pub const meta: Rule.Meta = .{
     .default = .off,
 };
 
-const Ctrl = struct {
-    idx: Ast.Node.Index,
-    start: u32,
-    end: u32,
-    depth: u32 = 0,
-    is_if: bool,
-};
-
 fn isControl(tag: Ast.Node.Tag) bool {
     return switch (tag) {
         .if_simple, .@"if", .while_simple, .while_cont, .@"while", .for_simple, .@"for", .@"switch", .switch_comma, .@"catch" => true,
         else => false,
     };
-}
-
-fn lessBySize(_: void, a: Ctrl, b: Ctrl) bool {
-    return (a.end - a.start) < (b.end - b.start);
 }
 
 fn isElseIf(ast: *const Ast, parent: Ast.Node.Index, child: Ast.Node.Index) bool {
@@ -47,44 +34,43 @@ fn isElseIf(ast: *const Ast, parent: Ast.Node.Index, child: Ast.Node.Index) bool
     return else_expr == child;
 }
 
-fn nestingDepth(ctx: *LinterContext, fn_node: Ast.Node.Index, fn_start: u32, fn_end: u32) u32 {
+fn nestingDepth(ctx: *LinterContext, fn_node: Ast.Node.Index) u32 {
     const ast = ctx.ast();
-    var controls: std.ArrayList(Ctrl) = .empty;
-    defer controls.deinit(ctx.gpa);
+    const links = ctx.links();
+    var max: u32 = 0;
 
     for (ast.nodes.items(.tag), 0..) |tag, raw| {
         if (!isControl(tag)) continue;
         const node: Ast.Node.Index = @fromBackingInt(@intCast(raw));
-        const span = ctx.semantic.nodeSpan(node);
-        if (span.start < fn_start or span.end > fn_end) continue;
-        if (node == fn_node) continue;
-        controls.append(ctx.gpa, .{
-            .idx = node,
-            .start = span.start,
-            .end = span.end,
-            .is_if = tag == .@"if" or tag == .if_simple,
-        }) catch return 0;
-    }
 
-    std.mem.sort(Ctrl, controls.items, {}, lessBySize);
-    var max: u32 = 0;
-    for (controls.items, 0..) |*item, i| {
-        var parent: ?*const Ctrl = null;
-        for (controls.items[0..i]) |*candidate| {
-            if (candidate.start <= item.start and candidate.end >= item.end) {
-                if (parent == null or candidate.depth > parent.?.depth) parent = candidate;
+        // Only control nodes whose nearest function ancestor is this function.
+        var belongs = false;
+        var ancestor = links.getParent(node);
+        while (ancestor) |parent| {
+            if (parent == fn_node) {
+                belongs = true;
+                break;
             }
+            if (ast.nodeTag(parent) == .fn_decl) break;
+            ancestor = links.getParent(parent);
         }
-        if (parent) |p| {
-            if (item.is_if and p.is_if and isElseIf(ast, p.idx, item.idx)) {
-                item.depth = p.depth;
-            } else {
-                item.depth = p.depth + 1;
+        if (!belongs) continue;
+
+        var depth: u32 = 1;
+        var child = node;
+        ancestor = links.getParent(node);
+        while (ancestor) |parent| {
+            if (parent == fn_node) break;
+            const parent_tag = ast.nodeTag(parent);
+            if (isControl(parent_tag)) {
+                if (!(parent_tag == .@"if" and ast.nodeTag(child) == .@"if" and isElseIf(ast, parent, child))) {
+                    depth += 1;
+                }
             }
-        } else {
-            item.depth = 1;
+            child = parent;
+            ancestor = links.getParent(parent);
         }
-        if (item.depth > max) max = item.depth;
+        if (depth > max) max = depth;
     }
     return max;
 }
@@ -94,8 +80,7 @@ pub fn runOnNode(self: *const MaxNesting, wrapper: NodeWrapper, ctx: *LinterCont
     if (self.allow_tests and zlint.linter.ast_utils.isInTest(ctx, wrapper.idx)) return;
 
     const ast = ctx.ast();
-    const span = ctx.semantic.nodeSpan(wrapper.idx);
-    const depth = nestingDepth(ctx, wrapper.idx, span.start, span.end);
+    const depth = nestingDepth(ctx, wrapper.idx);
     if (depth <= self.max_depth) return;
 
     var buf: [1]Ast.Node.Index = undefined;
