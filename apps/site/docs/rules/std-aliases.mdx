@@ -1,0 +1,69 @@
+---
+rule: '{"name":"std-aliases","category":"style","default":"off","fix":{"kind":"fix","dangerous":false},"needs_cfg":false}'
+---
+
+# `std-aliases`
+
+<RuleBanner category="style" default="off" fix={{"kind":"fix","dangerous":false}} />
+
+## What This Rule Does
+Enforces the canonical aliases for `std.mem` and `std.mem.Allocator`.
+
+Files that use `std.mem` should import it as `mem` and reference the alias
+instead of spelling out `std.mem` at every call site. Files that use
+`std.mem.Allocator` should import it as `Allocator`, derived from the `mem`
+alias.
+
+The canonical header is:
+```zig
+const std = @import("std");
+const mem = std.mem;
+const Allocator = mem.Allocator;
+```
+
+The alias declarations themselves are not reported. References to a
+different `mem` namespace (for example a struct field or parameter named
+`mem`) are ignored.
+
+## Examples
+
+Examples of **incorrect** code for this rule:
+```zig
+const std = @import("std");
+
+fn eql(a: []const u8, b: []const u8) bool {
+  return std.mem.eql(u8, a, b);
+}
+
+fn allocatorCopy(allocator: std.mem.Allocator) ![]u8 {
+  return allocator.dupe(u8, "x");
+}
+```
+
+```zig
+const std = @import("std");
+const mem = std.mem;
+const Allocator = mem.Allocator;
+
+fn allocatorCopy(allocator: mem.Allocator) ![]u8 {
+  return allocator.dupe(u8, "x");
+}
+```
+
+Examples of **correct** code for this rule:
+```zig
+const std = @import("std");
+const mem = std.mem;
+const Allocator = mem.Allocator;
+
+fn eql(a: []const u8, b: []const u8) bool {
+  return mem.eql(u8, a, b);
+}
+
+fn allocatorCopy(allocator: Allocator) ![]u8 {
+  return allocator.dupe(u8, "x");
+}
+```
+
+## Configuration
+This rule has no configuration.

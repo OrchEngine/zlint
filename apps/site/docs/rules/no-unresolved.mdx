@@ -4,7 +4,7 @@ rule: '{"name":"no-unresolved","category":"correctness","default":"err","fix":{"
 
 # `no-unresolved`
 
-<RuleBanner category="correctness" default="err" />
+<RuleBanner category="correctness" default="err"  />
 
 ## What This Rule Does
 
@@ -16,9 +16,7 @@ resolved. This rule checks that a file exists at the imported path and is
 not a directory. Symlinks are allowed but are not followed.
 
 ## Examples
-
 Assume the following directory structure:
-
 ```plaintext
 .
 ├── foo.zig
@@ -30,7 +28,6 @@ Assume the following directory structure:
 ```
 
 Examples of **incorrect** code for this rule:
-
 ```zig
 // root.zig
 const x = @import("mod/foo.zig");    // foo.zig is in the root directory.
@@ -38,7 +35,6 @@ const y = @import("not_a_file.zig"); // directory, not a file
 ```
 
 Examples of **correct** code for this rule:
-
 ```zig
 // root.zig
 const x = @import("foo.zig");
@@ -46,5 +42,4 @@ const y = @import("mod/bar.zig");
 ```
 
 ## Configuration
-
 This rule has no configuration.

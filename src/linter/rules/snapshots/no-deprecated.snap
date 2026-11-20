@@ -1,0 +1,82 @@
+  𝙭 no-deprecated: `std.fmt.bufPrint` is deprecated; use `std.mem.print` instead.
+   ╭─[no-deprecated.zig:4:12]
+ 3 │     var buffer: [32]u8 = undefined;
+ 4 │     return std.fmt.bufPrint(&buffer, "{d}", .{value});
+   ·            ────────┬────────
+   ·                    ╰── deprecated
+ 5 │ }
+   ╰────
+
+  𝙭 no-deprecated: `std.mem.indexOf` is deprecated; use `std.mem.find` instead.
+   ╭─[no-deprecated.zig:3:12]
+ 2 │ fn find(haystack: []const u8) ?usize {
+ 3 │     return std.mem.indexOf(u8, haystack, "needle");
+   ·            ───────┬───────
+   ·                   ╰── deprecated
+ 4 │ }
+   ╰────
+
+  𝙭 no-deprecated: `fmt.bufPrint` is deprecated; use `std.mem.print` instead.
+   ╭─[no-deprecated.zig:5:12]
+ 4 │     var buffer: [32]u8 = undefined;
+ 5 │     return fmt.bufPrint(&buffer, "{d}", .{value});
+   ·            ──────┬──────
+   ·                  ╰── deprecated
+ 6 │ }
+   ╰────
+
+  𝙭 no-deprecated: `std.builtin` is deprecated; use `std.lang.mode` instead.
+   ╭─[no-deprecated.zig:3:9]
+ 2 │ fn mode() void {
+ 3 │     _ = std.builtin.mode;
+   ·         ─────┬─────
+   ·              ╰── deprecated
+ 4 │ }
+   ╰────
+  help: `std.lang` is the new name for `std.builtin`.
+
+  𝙭 no-deprecated: `std.fs.path` is deprecated; use `std.Io.Dir.path.sep_str` instead.
+   ╭─[no-deprecated.zig:3:12]
+ 2 │ fn separator() []const u8 {
+ 3 │     return std.fs.path.sep_str;
+   ·            ─────┬─────
+   ·                 ╰── deprecated
+ 4 │ }
+   ╰────
+
+  𝙭 no-deprecated: `std.ArrayListUnmanaged` is deprecated; use `std.ArrayList` instead.
+   ╭─[no-deprecated.zig:2:14]
+ 1 │ const std = @import("std");
+ 2 │ const List = std.ArrayListUnmanaged(u8);
+   ·              ───────────┬───────────
+   ·                         ╰── deprecated
+ 3 │ fn foo(list: *List) void { _ = list; }
+   ╰────
+
+  𝙭 no-deprecated: `isAARCH64` is deprecated; use `isAarch64` instead.
+   ╭─[no-deprecated.zig:2:17]
+ 1 │ fn arch(arch: Arch) bool {
+ 2 │     return arch.isAARCH64();
+   ·                 ────┬────
+   ·                     ╰── deprecated
+ 3 │ }
+   ╰────
+
+  𝙭 no-deprecated: `std.elf.Ehdr` is deprecated; use `std.elf.ElfN.Ehdr` instead.
+   ╭─[no-deprecated.zig:2:16]
+ 1 │ const std = @import("std");
+ 2 │ fn tag(header: std.elf.Ehdr) u16 {
+   ·                ──────┬──────
+   ·                      ╰── deprecated
+ 3 │     _ = header;
+   ╰────
+
+  𝙭 no-deprecated: `std.elf.SHT_PROGBITS` is deprecated; use `@intFromEnum(std.elf.SHT.PROGBITS)` instead.
+   ╭─[no-deprecated.zig:4:12]
+ 3 │     _ = header;
+ 4 │     return std.elf.SHT_PROGBITS;
+   ·            ──────────┬──────────
+   ·                      ╰── deprecated
+ 5 │ }
+   ╰────
+

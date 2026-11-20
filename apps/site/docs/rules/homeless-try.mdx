@@ -4,10 +4,9 @@ rule: '{"name":"homeless-try","category":"compiler","default":"err","fix":{"kind
 
 # `homeless-try`
 
-<RuleBanner category="compiler" default="err" />
+<RuleBanner category="compiler" default="err"  />
 
 ## What This Rule Does
-
 Checks for `try` statements used outside of error-returning functions.
 
 As a `compiler`-level lint, this rule checks for errors also caught by the
@@ -16,7 +15,6 @@ Zig compiler.
 ## Examples
 
 Examples of **incorrect** code for this rule:
-
 ```zig
 const std = @import("std");
 
@@ -41,7 +39,6 @@ fn qux() !void {
 ```
 
 Examples of **correct** code for this rule:
-
 ```zig
 fn foo() !void {
   var my_str = try std.heap.page_allocator.alloc(u8, 8);
@@ -50,7 +47,6 @@ fn foo() !void {
 
 Zig allows `try` in comptime blocks and expressions within functions, since
 returned errors become compile errors. This rule does not flag these cases.
-
 ```zig
 const std = @import("std");
 fn foo(x: u32) void {
@@ -69,7 +65,6 @@ fn bar(x: u32) !void {
 Zig also allows `try` on functions whose error union sets are empty. ZLint
 does _not_ respect this case. Please refactor such functions to not return
 an error union.
-
 ```zig
 const std = @import("std");
 fn foo() !u32 {
@@ -84,7 +79,6 @@ fn bar() u32 {
 
 Named aliases for error unions are resolved through the semantic model, so
 functions returning them are not flagged.
-
 ```zig
 const Error = error{Oops};
 const Result = Error!void;
@@ -98,5 +92,4 @@ generic instantiations, etc.) are never flagged, since doing so risks a
 false positive.
 
 ## Configuration
-
 This rule has no configuration.

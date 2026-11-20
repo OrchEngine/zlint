@@ -4,7 +4,7 @@ rule: '{"name":"line-length","category":"style","default":"off","fix":{"kind":"n
 
 # `line-length`
 
-<RuleBanner category="style" default="off" />
+<RuleBanner category="style" default="off"  />
 
 ## What This Rule Does
 
@@ -13,7 +13,6 @@ Checks if any line goes beyond a given number of columns.
 ## Examples
 
 Examples of **incorrect** code for this rule (with a threshold of 120 columns):
-
 ```zig
 const std = @import("std");
 const longStructDeclarationInOneLine = struct { max_length: u32 = 120, a: usize = 123, b: usize = 12354, c: usize = 1234352 };
@@ -23,7 +22,6 @@ fn reallyExtraVerboseFunctionNameToThePointOfBeingACodeSmellAndProbablyAHintThat
 ```
 
 Examples of **correct** code for this rule (with a threshold of 120 columns):
-
 ```zig
 const std = @import("std");
 const longStructInMultipleLines = struct {
@@ -38,7 +36,5 @@ fn Get123Constant() u32 {
 ```
 
 ## Configuration
-
 This rule accepts the following options:
-
 - max_length: int

@@ -1,0 +1,75 @@
+---
+rule: '{"name":"no-deprecated","category":"suspicious","default":"warning","fix":{"kind":"fix","dangerous":false},"needs_cfg":false}'
+---
+
+# `no-deprecated`
+
+<RuleBanner category="suspicious" default="warning" fix={{"kind":"fix","dangerous":false}} />
+
+## What This Rule Does
+Flags deprecated Zig standard-library APIs and points at their replacements.
+
+The rule carries a curated table of the deprecations in the Zig 0.17.1
+standard library. It understands both fully-qualified paths such as
+`std.fmt.bufPrint` and aliases such as:
+
+```zig
+const fmt = std.fmt;
+const mem = std.mem;
+
+_ = fmt.bufPrint(...); // reported
+_ = mem.indexOf(...); // reported
+```
+
+Direct path renames are autofixed when the replacement is a drop-in
+expression. Deprecations whose replacement changes the call shape (for
+example `std.fmt.allocPrint` moving to `allocator.print`) are reported with
+guidance but are not automatically rewritten.
+
+### Limitations
+ZLint does not have a type checker. Deprecations of instance methods are
+matched by method name, which is best-effort: a user-defined
+`readAlloc` or `getLastOrNull` method may be reported. Deprecations that
+only apply to default struct initialization (for example
+`std.HashMapUnmanaged{}`) are not detected.
+
+## Examples
+
+Examples of **incorrect** code for this rule:
+```zig
+const std = @import("std");
+
+fn render(value: u32) ![]u8 {
+    var buffer: [32]u8 = undefined;
+    return std.fmt.bufPrint(&buffer, "{d}", .{value});
+}
+
+fn find(haystack: []const u8) ?usize {
+    return std.mem.indexOf(u8, haystack, "needle");
+}
+
+fn join(allocator: std.mem.Allocator) ![]u8 {
+    return std.fs.path.resolve(allocator, &.{ "a", "b" });
+}
+```
+
+Examples of **correct** code for this rule:
+```zig
+const std = @import("std");
+
+fn render(value: u32) ![]u8 {
+    var buffer: [32]u8 = undefined;
+    return std.mem.print(&buffer, "{d}", .{value});
+}
+
+fn find(haystack: []const u8) ?usize {
+    return std.mem.find(u8, haystack, "needle");
+}
+
+fn join(allocator: std.mem.Allocator) ![]u8 {
+    return std.Io.Dir.path.resolveAlloc(allocator, &.{ "a", "b" });
+}
+```
+
+## Configuration
+This rule has no configuration.

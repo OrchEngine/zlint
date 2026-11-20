@@ -4,10 +4,9 @@ rule: '{"name":"duplicate-case","category":"suspicious","default":"off","fix":{"
 
 # `duplicate-case`
 
-<RuleBanner category="suspicious" default="off" />
+<RuleBanner category="suspicious" default="off"  />
 
 ## What This Rule Does
-
 Checks for duplicate cases in switch statements.
 
 This rule identifies when switch statements have case branches that could
@@ -18,7 +17,6 @@ the target expressions are duplicates.
 ## Examples
 
 Examples of **incorrect** code for this rule:
-
 ```zig
 fn foo() void {
   const x = switch (1) {
@@ -37,7 +35,6 @@ fn bar(y: u32) void {
 ```
 
 Examples of **correct** code for this rule:
-
 ```zig
 fn foo() void {
   const x = switch (1) {
@@ -56,5 +53,4 @@ fn bar(y: u32) void {
 ```
 
 ## Configuration
-
 This rule has no configuration.

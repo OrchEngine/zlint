@@ -4,10 +4,9 @@ rule: '{"name":"case-convention","category":"style","default":"off","fix":{"kind
 
 # `case-convention`
 
-<RuleBanner category="style" default="off" />
+<RuleBanner category="style" default="off"  />
 
 ## What This Rule Does
-
 Enforces Zig's naming convention.
 
 :::warning
@@ -15,26 +14,23 @@ Only functions are checked at this time.
 :::
 
 ## Functions
-
 In general, functions that return values should use camelCase names while
 those that return types should use PascalCase. Specially coming from Rust,
 some people may be used to use snake_case for their functions, which can
 lead to inconsistencies in the code.
 
-Note that `extern` functions are not checked since you cannot change
+Note that `extern`  functions are not checked since you cannot change
 their names.
 
 ## Examples
 
 Examples of **incorrect** code for this rule:
-
 ```zig
 fn this_one_is_in_snake_case() void {}
 fn generic(T: type) T { return T{}; }
 ```
 
 Examples of **correct** code for this rule:
-
 ```zig
 fn thisFunctionIsInCamelCase() void {}
 fn Generic(T: type) T { return T{}; }
@@ -42,5 +38,4 @@ extern fn this_is_declared_in_c() void;
 ```
 
 ## Configuration
-
 This rule has no configuration.

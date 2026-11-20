@@ -1,0 +1,57 @@
+  𝙭 std-aliases: Use the `mem` alias instead of `std.mem.eql`.
+   ╭─[std-aliases.zig:3:12]
+ 2 │ fn eql(a: []const u8, b: []const u8) bool {
+ 3 │     return std.mem.eql(u8, a, b);
+   ·            ─────┬─────
+   ·                 ╰── use the `mem` alias
+ 4 │ }
+   ╰────
+  help: Declare `const mem = std.mem;` and reference `mem` instead of `std.mem`.
+
+  𝙭 std-aliases: Use the `Allocator` alias instead of `std.mem.Allocator`.
+   ╭─[std-aliases.zig:2:19]
+ 1 │ const std = @import("std");
+ 2 │ fn foo(allocator: std.mem.Allocator) void { _ = allocator; }
+   ·                   ────────┬────────
+   ·                           ╰── use the `Allocator` alias
+   ╰────
+  help: Declare `const Allocator = mem.Allocator;` and use `Allocator` instead.
+
+  𝙭 std-aliases: Use the `Allocator` alias instead of `std.mem.Allocator`.
+   ╭─[std-aliases.zig:2:19]
+ 1 │ const std = @import("std");
+ 2 │ const Allocator = std.mem.Allocator;
+   ·                   ────────┬────────
+   ·                           ╰── use the `Allocator` alias
+ 3 │ fn foo(allocator: Allocator) void { _ = allocator; }
+   ╰────
+  help: Declare `const Allocator = mem.Allocator;` and use `Allocator` instead.
+
+  𝙭 std-aliases: Use the `Allocator` alias instead of `mem.Allocator`.
+   ╭─[std-aliases.zig:4:19]
+ 3 │ const Allocator = mem.Allocator;
+ 4 │ fn foo(allocator: mem.Allocator) void { _ = allocator; }
+   ·                   ──────┬──────
+   ·                         ╰── use the `Allocator` alias
+   ╰────
+  help: Declare `const Allocator = mem.Allocator;` and use `Allocator` instead.
+
+  𝙭 std-aliases: Use the `mem` alias instead of `std.mem.eql`.
+   ╭─[std-aliases.zig:4:12]
+ 3 │ fn eql(a: []const u8, b: []const u8) bool {
+ 4 │     return std.mem.eql(u8, a, b);
+   ·            ─────┬─────
+   ·                 ╰── use the `mem` alias
+ 5 │ }
+   ╰────
+  help: Declare `const mem = std.mem;` and reference `mem` instead of `std.mem`.
+
+  𝙭 std-aliases: Use the `mem` alias instead of `std.mem`.
+   ╭─[std-aliases.zig:2:16]
+ 1 │ const std = @import("std");
+ 2 │ const memory = std.mem;
+   ·                ───┬───
+   ·                   ╰── use the `mem` alias
+   ╰────
+  help: Declare `const mem = std.mem;` and reference `mem` instead of `std.mem`.
+
