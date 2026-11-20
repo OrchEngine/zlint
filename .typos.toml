@@ -10,4 +10,5 @@ extend-glob = ["*.zig", "*.zog"]
 check-file = true
 
 [type.zig.extend-words]
+rela = "rela" # ELF section type (SHT_RELA)
 "hlep" = "hlep" # "--hlep" is checked for in options parsing, used as --help alias.

@@ -174,7 +174,7 @@ fn classifyTry(ctx: *LinterContext, try_node: Node.Index, boundary: Node.Index) 
     var it = ctx.links().iterParentIds(try_node);
     while (it.next()) |id| {
         if (id == boundary) break;
-        switch (tags[@intFromEnum(id)]) {
+        switch (tags[@backingInt(id)]) {
             .@"defer", .@"errdefer" => return .{ .deferred = id },
             .@"comptime" => in_comptime = true,
             else => {},
